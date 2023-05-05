@@ -1,2 +1,0 @@
-insert into Report (reportId,reportName,idUsuario,reportDateTime,identityName) Values (1,'Reporte 1','567890123','2023-05-04 14:30:00','NombreEntidad1')
-insert into Report (reportId,reportName,idUsuario,reportDateTime,identityName) Values (2,'Reporte 2','984562037','2023-03-02 09:15:00','NombreEntidad2')
