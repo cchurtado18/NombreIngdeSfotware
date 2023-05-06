@@ -1,0 +1,125 @@
+create database Mific 
+use Mific
+
+CREATE TABLE [Category]
+(
+	[categoryId] int not NULL,
+	[categoryName] varchar(50) not NULL,
+	constraint pk_categoryId primary key (categoryId)
+)
+GO
+CREATE TABLE [DocPermission]
+(
+	[user_Role] int not NULL,
+	[leer] bit NULL,
+	[copiar] bit NULL,
+	[descargar] bit NULL,
+	[imprimir] bit NULL,
+	[dejarCompartir] bit NULL,
+	[comentar] bit NULL,
+	[reportePermit] timestamp not NULL,
+	[idUsuario] varchar(50) not NULL,
+	constraint fk_userRole foreign key (user_Role) references UserPermission(userRole),
+	constraint fk_id_Usuario foreign key (idUsuario) references Usuario(idUsuario)
+)
+GO
+
+CREATE TABLE [Documento]
+(
+	[docId] int not NULL,
+	[docName] varchar(50) NULL,
+	[ext] text NULL,
+	[upDate] datetime NULL,
+	[expDate] datetimeoffset(7) NULL,
+	[securityLevel] int NULL,
+	[categoryId] int NULL,
+	[docTopic] varchar(50) NULL,
+	constraint pk_docId primary key (docId),
+	constraint fk_categoryId foreign key (categoryId) references category (categoryId)
+)
+GO
+
+CREATE TABLE [Entity]
+(
+	[entityId] int IDENTITY(1,1),
+	[entityName] varchar(50) not NULL, 
+	constraint pk_entityName primary key (entityName)
+)
+GO
+
+CREATE TABLE [Machine]
+(
+	[machineID] int not NULL,
+	[machineName] varchar(50) NULL,
+	[machineAddress] varchar(50) NULL,
+	[idUsuario] varchar(50) NULL,
+	constraint pk_machineID primary key (machineID),
+	constraint fk_idusuario_ foreign key (idUsuario) references Usuario (idUsuario),
+)
+GO
+
+CREATE TABLE [Report]
+(
+	[reportId] int not NULL,
+	[reportName] varchar(50) NULL,
+	[idUsuario] varchar(50) NULL,
+	[reportDateTime] datetime NULL,
+	[identityName] varchar(50) NULL,
+	constraint pk_reportId primary key (reportId),
+	constraint fk_idU_suario foreign key (idUsuario) references Usuario (idUsuario)
+
+)
+GO
+
+CREATE TABLE [UserLog]
+(
+	[idUsuario] varchar(50) NULL,
+	[name] varchar(50) NULL,
+	[rol] varchar(50) NULL,
+	[entityName] varchar(50) NULL,
+	[loginDateTime] DateTime  NOT NULL DEFAULT current_timestamp,
+	[LogOutDateTime] Datetime2  NOT NULL DEFAULT current_timestamp,
+	[docId] int not NULL,
+	[docName] varchar(50) NULL,
+	[machineId] int not NULL,
+	[reportId] int not NULL,
+	constraint fk_idUs_uario foreign key(idUsuario) references Usuario (idUsuario),
+	constraint fk_doc_Id foreign key (docId) references Documento (docId),
+	constraint fk_machine_Id foreign key (machineId) references Machine (machineId),
+	constraint fk_report_Id foreign key (reportId) references Report (reportId)
+)
+GO
+
+CREATE TABLE [UserPermission]
+(
+	[userRole] int not NULL,
+	[idUsuario] varchar(50) NULL,
+	[createUser] varchar(50) NULL,
+	[deleteUser] varchar(50) NULL,
+	[modifyUser] varchar(50) NULL, 
+	constraint pk_userRole primary key (userRole) ,
+	constraint fk_idUsuario foreign key (idUsuario) references Usuario (idUsuario)
+
+)
+GO
+
+CREATE TABLE [Usuario]
+(
+	[idUsuario] varchar(50) not NULL,
+	[fullName] varchar(50) NULL,
+	[userName] varchar(50) NULL,
+	[password] varchar(20) NULL,
+	[email] varchar(50) NULL,
+	[isActive] varchar(50) NULL,
+	[entityName] varchar(50) not NULL,
+	constraint pk_idUsuario primary key (idUsuario),
+	constraint fk_entityname foreign key (entityName) references Entity (entityName)
+)
+GO
+
+/* Create Primary Keys, Indexes, Uniques, Checks */
+
+ALTER TABLE [DocPermission] 
+ ADD CONSTRAINT [PK_DocPermission]
+	PRIMARY KEY CLUSTERED
+GO
